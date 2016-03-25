@@ -70,13 +70,13 @@ func handlerIndex(rw http.ResponseWriter, req *http.Request) {
 
 func handlerStatic(rw http.ResponseWriter, req *http.Request) {
 	b, ok := css[filepath.Base(req.URL.Path)]
-	if !ok {
-		http.NotFound(rw, req)
+	if ok {
+		rw.Header().Set("Content-Type", "text/css")
+		rw.Write(b)
 		return
 	}
 
-	rw.Header().Set("Content-Type", "text/css")
-	rw.Write(b)
+	http.NotFound(rw, req)
 }
 
 func handlerCatchall(rw http.ResponseWriter, req *http.Request) {
