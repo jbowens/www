@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/jbowens/www/blog"
 )
 
 const (
@@ -12,6 +14,12 @@ const (
 )
 
 func main() {
+	err := blog.Load("posts")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		os.Exit(1)
+	}
+
 	initRoutes(http.DefaultServeMux)
 	s := &http.Server{
 		Addr:           listenAddr,
@@ -21,7 +29,7 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	err := s.ListenAndServe()
+	err = s.ListenAndServe()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
