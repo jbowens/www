@@ -58,10 +58,16 @@ func Serve(listenAddr string) error {
 }
 
 func initRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/about", handlerAbout)
-	mux.HandleFunc("/static/", handlerStatic)
-	mux.HandleFunc("/p/", handlerBlogPost)
-	mux.HandleFunc("/", handlerCatchall)
+	innerMux := http.NewServeMux()
+	innerMux.HandleFunc("/about", handlerAbout)
+	innerMux.HandleFunc("/static/", handlerStatic)
+	innerMux.HandleFunc("/p/", handlerBlogPost)
+	innerMux.HandleFunc("/", handlerCatchall)
+
+	mux.HandleFunc("/", func(rw http.ResponseWriter, req *http.Request) {
+		log.Printf("%s %s\n", req.Method, req.URL)
+		innerMux.ServeHTTP(rw, req)
+	})
 }
 
 type sharedTemplateParams struct {
@@ -128,8 +134,6 @@ func handlerStatic(rw http.ResponseWriter, req *http.Request) {
 }
 
 func handlerCatchall(rw http.ResponseWriter, req *http.Request) {
-	log.Printf("%s %s\n", req.Method, req.URL)
-
 	switch req.URL.Path {
 	case "/":
 		handlerIndex(rw, req)
