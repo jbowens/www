@@ -65,12 +65,14 @@ func initRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/", handlerCatchall)
 }
 
+type sharedTemplateParams struct {
+	IncludeCSS []string
+}
+
 func handlerIndex(rw http.ResponseWriter, req *http.Request) {
 	tmpl := htmlTemplates["index.html"]
 
-	params := struct {
-		IncludeCSS []string
-	}{}
+	params := struct{ sharedTemplateParams }{}
 	for f := range css {
 		params.IncludeCSS = append(params.IncludeCSS, f)
 	}
@@ -82,9 +84,7 @@ func handlerIndex(rw http.ResponseWriter, req *http.Request) {
 }
 
 func handlerAbout(rw http.ResponseWriter, req *http.Request) {
-	params := struct {
-		IncludeCSS []string
-	}{}
+	params := struct{ sharedTemplateParams }{}
 	for f := range css {
 		params.IncludeCSS = append(params.IncludeCSS, f)
 	}
@@ -103,8 +103,8 @@ func handlerBlogPost(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	params := struct {
-		IncludeCSS []string
-		Post       blog.Post
+		sharedTemplateParams
+		Post blog.Post
 	}{Post: p}
 	for f := range css {
 		params.IncludeCSS = append(params.IncludeCSS, f)
