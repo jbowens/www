@@ -43,6 +43,10 @@ type Post struct {
 }
 
 func (p Post) Title() string {
+	if p.OverrideTitle != "" {
+		return p.OverrideTitle
+	}
+
 	t := strings.Join(strings.Split(p.ID, "-"), " ")
 	runes := []rune(t)
 	runes[0] = unicode.ToUpper(runes[0])
@@ -52,9 +56,10 @@ func (p Post) Title() string {
 // Metadata represents metadata about a post. It's stored in boltdb, instead
 // of on the file system with the markdown.
 type Metadata struct {
-	Hash      [32]byte
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Hash          [32]byte
+	OverrideTitle string
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
 }
 
 // Posts returns all of the posts in the blog.
