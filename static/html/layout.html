@@ -1,0 +1,29 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        {{template "title" .}}
+        <title>jackson owens</title>
+        {{ range .IncludeCSS }}
+        <link rel="stylesheet" href="/static/{{ . }}" />
+        {{ end }}
+    </head>
+    <body>
+        <div id="cont">
+            <div id="header">
+                <div id="name">
+                    Jackson Owens
+                </div>
+                <ul id="nav">
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/">Notes</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div id="page">
+                {{template "content" .}}
+            </div>
+        </div>
+    </body>
+</html>
+{{end}}

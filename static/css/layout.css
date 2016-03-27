@@ -1,6 +1,110 @@
-body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; }
+
+@font-face {
+    font-family: 'pier';
+    src: url('/static/fonts/pier-regular-webfont.eot');
+    src: url('/static/fonts/pier-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/static/fonts/pier-regular-webfont.woff2') format('woff2'),
+         url('/static/fonts/pier-regular-webfont.woff') format('woff'),
+         url('/static/fonts/pier-regular-webfont.ttf') format('truetype'),
+         url('/static/fonts/pier-regular-webfont.svg#pier_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'qanelas-soft';
+    src: url('/static/fonts/qanelas-soft-ultralight.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+  font-family: "pier";
+}
+
+#cont {
+  width: 70%;
+  min-width: 800px;
+  margin: 0 auto;
+}
+
+#page {
+  padding: 25px;
+}
 
 div#header {
-    text-transform: uppercase;
-    margin: 1em;
+  margin: 5em 0 1em 0;
+  font-family: 'qanelas-soft';
+}
+
+#name {
+  display: inline-block;
+  float: left;
+  text-transform: uppercase;
+  font-size: 1.5em;
+}
+
+#name .tagline {
+  font-size: 0.5em;
+}
+
+#nav {
+  list-style: none;
+  display: inline-block;
+  float: right;
+  margin: 0;
+  padding: 0;
+}
+
+#nav li {
+  display: inline;
+  margin: 5px 0 0 25px;
+  padding: 0;
+}
+
+#nav a {
+  text-decoration: none;
+  text-transform: lowercase;
+  font-size: 1.1em;
+}
+
+h1 {
+  margin: 0.25em 0;
+  padding: 0;
+}
+
+h2 {
+  margin: 0.25em 0;
+  padding: 0;
+  font-size: 1.2em;
+}
+
+.caret {
+  font-size: 0.8em;
+  color: #555;
+  vertical-align: 15%;
+  width: 15px;
+  display: inline-block;
+}
+
+.teaser {
+  margin-left: 15px;
+}
+
+h2:hover .caret {
+  color: #222;
+}
+
+#page a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#page a:hover {
+  color: #000;
+}
+
+.clear {
+  clear: both;
 }

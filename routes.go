@@ -13,6 +13,7 @@ import (
 var (
 	htmlTemplates = map[string]*template.Template{
 		"index.html": nil,
+		"about.html": nil,
 	}
 )
 
@@ -20,17 +21,13 @@ var (
 	css = map[string][]byte{}
 )
 
+var (
+	staticFileServer = http.StripPrefix("/static/", http.FileServer(http.Dir("static")))
+)
+
 func init() {
 	for f := range htmlTemplates {
-		contents, err := ioutil.ReadFile(filepath.Join("static", "html", f))
-		if err != nil {
-			panic(err)
-		}
-		t, err := template.New(f).Parse(string(contents))
-		if err != nil {
-			panic(err)
-		}
-		htmlTemplates[f] = t
+		htmlTemplates[f] = template.Must(template.ParseFiles("static/html/"+f, "static/html/layout.html"))
 	}
 
 	cssBundle := assets.Dir("static/css").MustAllFiles().MustFilter(
@@ -48,6 +45,7 @@ func init() {
 }
 
 func initRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("/about", handlerAbout)
 	mux.HandleFunc("/static/", handlerStatic)
 	mux.HandleFunc("/", handlerCatchall)
 }
@@ -62,7 +60,23 @@ func handlerIndex(rw http.ResponseWriter, req *http.Request) {
 		params.IncludeCSS = append(params.IncludeCSS, f)
 	}
 
-	err := tmpl.Execute(rw, params)
+	err := tmpl.ExecuteTemplate(rw, "base", params)
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func handlerAbout(rw http.ResponseWriter, req *http.Request) {
+	tmpl := htmlTemplates["about.html"]
+
+	params := struct {
+		IncludeCSS []string
+	}{}
+	for f := range css {
+		params.IncludeCSS = append(params.IncludeCSS, f)
+	}
+
+	err := tmpl.ExecuteTemplate(rw, "base", params)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 	}
@@ -76,7 +90,7 @@ func handlerStatic(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	http.NotFound(rw, req)
+	staticFileServer.ServeHTTP(rw, req)
 }
 
 func handlerCatchall(rw http.ResponseWriter, req *http.Request) {

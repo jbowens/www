@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>jackson owens</title>
-        {{ range .IncludeCSS }}
-        <link rel="stylesheet" href="/static/{{ . }}" />
-        {{ end }}
-    </head>
-    <body>
-        <div id="header">Jackson Owens</div>
-    </body>
-</html>
+{{define "title"}}
+  <title>jackson owens</title>
+{{end}}
+{{define "content"}}
+    <div id="posts">
+        <div>
+            <h2>
+                <span class="caret">&gt;</span><a href="/p/graceful-shutdown-in-golang">Graceful shutdown in golang</a>
+            </h2>
+            <div class="teaser">
+                March 26th, 2016
+            </div>
+        </div>
+    </div>
+{{end}}
