@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
-	"time"
 
+	"github.com/jbowens/www"
 	"github.com/jbowens/www/blog"
 )
 
@@ -20,16 +19,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	initRoutes(http.DefaultServeMux)
-	s := &http.Server{
-		Addr:           listenAddr,
-		Handler:        http.DefaultServeMux,
-		ReadTimeout:    30 * time.Second,
-		WriteTimeout:   30 * time.Second,
-		MaxHeaderBytes: 1 << 20,
-	}
-
-	err = s.ListenAndServe()
+	err = www.Serve(listenAddr)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)

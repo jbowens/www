@@ -1,4 +1,4 @@
-package main
+package www
 
 import (
 	"html/template"
@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	"github.com/jbowens/assets"
 )
@@ -25,7 +26,7 @@ var (
 	staticFileServer = http.StripPrefix("/static/", http.FileServer(http.Dir("static")))
 )
 
-func init() {
+func Serve(listenAddr string) error {
 	for f := range htmlTemplates {
 		htmlTemplates[f] = template.Must(template.ParseFiles("static/html/"+f, "static/html/layout.html"))
 	}
@@ -38,10 +39,21 @@ func init() {
 	for _, asset := range cssBundle.Assets() {
 		b, err := ioutil.ReadAll(asset.Contents())
 		if err != nil {
-			panic(err)
+			return err
 		}
 		css[asset.FileName()] = b
 	}
+
+	initRoutes(http.DefaultServeMux)
+	s := &http.Server{
+		Addr:           listenAddr,
+		Handler:        http.DefaultServeMux,
+		ReadTimeout:    30 * time.Second,
+		WriteTimeout:   30 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	return s.ListenAndServe()
 }
 
 func initRoutes(mux *http.ServeMux) {
