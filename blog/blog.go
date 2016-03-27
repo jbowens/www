@@ -76,7 +76,7 @@ func PostByID(id string) (Post, bool) {
 // directory as posts.
 func Load(dir string) error {
 	var err error
-	db, err = bolt.Open("blog.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	db, err = bolt.Open("data/blog.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		return err
 	}
