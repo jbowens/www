@@ -4,10 +4,13 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/gob"
+	"html/template"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -15,19 +18,26 @@ import (
 )
 
 var (
+	mu    sync.Mutex
 	db    *bolt.DB
-	posts []Post
+	posts map[string]Post = map[string]Post{}
 )
 
 var (
 	bucketPosts = []byte("posts")
 )
 
+type byCreatedAt []Post
+
+func (p byCreatedAt) Len() int           { return len(p) }
+func (p byCreatedAt) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+func (p byCreatedAt) Less(i, j int) bool { return p[i].CreatedAt.Before(p[j].CreatedAt) }
+
 // Post represents an individual blog entry.
 type Post struct {
 	ID       string
 	Markdown []byte
-	HTML     []byte
+	HTML     template.HTML
 	Metadata
 }
 
@@ -41,7 +51,25 @@ type Metadata struct {
 
 // Posts returns all of the posts in the blog.
 func Posts() []Post {
-	return posts
+	mu.Lock()
+	defer mu.Unlock()
+
+	copiedPosts := make([]Post, 0, len(posts))
+	for _, p := range posts {
+		copiedPosts = append(copiedPosts, p)
+	}
+
+	sort.Sort(byCreatedAt(copiedPosts))
+	return copiedPosts
+}
+
+// PostByID returns the post with the provided id, if it exists.
+func PostByID(id string) (Post, bool) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	p, ok := posts[id]
+	return p, ok
 }
 
 // Load takes a directory and loads all of the markdown files in the
@@ -81,7 +109,7 @@ func Load(dir string) error {
 		p := Post{
 			ID:       name,
 			Markdown: b,
-			HTML:     blackfriday.MarkdownCommon(b),
+			HTML:     template.HTML(blackfriday.MarkdownCommon(b)),
 			Metadata: Metadata{},
 		}
 		markdownHash := sha256.New().Sum(b)
@@ -92,7 +120,7 @@ func Load(dir string) error {
 			return err
 		}
 
-		posts = append(posts, p)
+		posts[name] = p
 		return nil
 	})
 	return err

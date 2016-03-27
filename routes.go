@@ -5,16 +5,19 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"path"
 	"path/filepath"
 	"time"
 
 	"github.com/jbowens/assets"
+	"github.com/jbowens/www/blog"
 )
 
 var (
 	htmlTemplates = map[string]*template.Template{
 		"index.html": nil,
 		"about.html": nil,
+		"post.html":  nil,
 	}
 )
 
@@ -52,13 +55,13 @@ func Serve(listenAddr string) error {
 		WriteTimeout:   30 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-
 	return s.ListenAndServe()
 }
 
 func initRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/about", handlerAbout)
 	mux.HandleFunc("/static/", handlerStatic)
+	mux.HandleFunc("/p/", handlerBlogPost)
 	mux.HandleFunc("/", handlerCatchall)
 }
 
@@ -79,8 +82,6 @@ func handlerIndex(rw http.ResponseWriter, req *http.Request) {
 }
 
 func handlerAbout(rw http.ResponseWriter, req *http.Request) {
-	tmpl := htmlTemplates["about.html"]
-
 	params := struct {
 		IncludeCSS []string
 	}{}
@@ -88,7 +89,28 @@ func handlerAbout(rw http.ResponseWriter, req *http.Request) {
 		params.IncludeCSS = append(params.IncludeCSS, f)
 	}
 
-	err := tmpl.ExecuteTemplate(rw, "base", params)
+	err := htmlTemplates["about.html"].ExecuteTemplate(rw, "base", params)
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func handlerBlogPost(rw http.ResponseWriter, req *http.Request) {
+	p, ok := blog.PostByID(path.Base(req.URL.Path))
+	if !ok {
+		http.NotFound(rw, req)
+		return
+	}
+
+	params := struct {
+		IncludeCSS []string
+		Post       blog.Post
+	}{Post: p}
+	for f := range css {
+		params.IncludeCSS = append(params.IncludeCSS, f)
+	}
+
+	err := htmlTemplates["post.html"].ExecuteTemplate(rw, "base", params)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 	}
