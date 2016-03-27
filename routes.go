@@ -69,14 +69,15 @@ type sharedTemplateParams struct {
 }
 
 func handlerIndex(rw http.ResponseWriter, req *http.Request) {
-	tmpl := htmlTemplates["index.html"]
-
-	params := struct{ sharedTemplateParams }{}
+	params := struct {
+		sharedTemplateParams
+		Posts []blog.Post
+	}{Posts: blog.Posts()}
 	for f := range css {
 		params.IncludeCSS = append(params.IncludeCSS, f)
 	}
 
-	err := tmpl.ExecuteTemplate(rw, "base", params)
+	err := htmlTemplates["index.html"].ExecuteTemplate(rw, "base", params)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 	}

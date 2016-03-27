@@ -12,6 +12,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"unicode"
 
 	"github.com/boltdb/bolt"
 	"github.com/russross/blackfriday"
@@ -39,6 +40,13 @@ type Post struct {
 	Markdown []byte
 	HTML     template.HTML
 	Metadata
+}
+
+func (p Post) Title() string {
+	t := strings.Join(strings.Split(p.ID, "-"), " ")
+	runes := []rune(t)
+	runes[0] = unicode.ToUpper(runes[0])
+	return string(runes)
 }
 
 // Metadata represents metadata about a post. It's stored in boltdb, instead
@@ -162,8 +170,8 @@ func lookupMetadata(p *Post) error {
 			if err != nil {
 				return err
 			}
-			p.Metadata = m
 		}
+		p.Metadata = m
 		return err
 	})
 	return err

@@ -3,13 +3,15 @@
 {{end}}
 {{define "content"}}
     <div id="posts">
-        <div>
+        {{ range .Posts }}
+        <div class="post">
             <h2>
-                <span class="caret">&gt;</span><a href="/p/graceful-shutdown-in-golang">Graceful shutdown in golang</a>
+                <span class="caret">&gt;</span><a href="/p/{{.ID}} ">{{.Title}}</a>
             </h2>
             <div class="teaser">
-                March 26th, 2016
+                {{.CreatedAt.Format "January 2, 2006"}}
             </div>
         </div>
+        {{ end }}
     </div>
 {{end}}
