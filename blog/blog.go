@@ -54,7 +54,6 @@ func Load(dir string) error {
 	}
 
 	// Create the posts bucket if it doesn't already exist.
-
 	err = db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists(bucketPosts)
 		return err

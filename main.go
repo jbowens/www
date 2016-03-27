@@ -14,7 +14,7 @@ const (
 )
 
 func main() {
-	err := blog.Load("posts")
+	err := blog.Load("blog/markdown")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
