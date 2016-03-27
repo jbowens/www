@@ -37,7 +37,6 @@ func Serve(listenAddr string) error {
 	cssBundle := assets.Dir("static/css").MustAllFiles().MustFilter(
 		assets.Concat(),
 		assets.Fingerprint(),
-		assets.WriteToDir("static/generated"),
 	)
 	for _, asset := range cssBundle.Assets() {
 		b, err := ioutil.ReadAll(asset.Contents())
