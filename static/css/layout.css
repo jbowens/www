@@ -12,37 +12,35 @@ html, body { margin: 0; padding: 0; }
     font-style: normal;
 }
 
-@font-face {
-    font-family: 'qanelas-soft';
-    src: url('/static/fonts/qanelas-soft-ultralight.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
-
 body {
   font-family: "pier";
 }
 
 #cont {
-  width: 70%;
-  min-width: 800px;
+  width: 600px;
   margin: 0 auto;
 }
 
 #page {
-  padding: 25px;
+  margin: 3em 0 1em 0;
+  font-size: 1.1em;
+}
+
+#page p {
+  line-height: 2;
 }
 
 div#header {
-  margin: 5em 0 1em 0;
-  font-family: 'qanelas-soft';
+  margin: 1em 0 1em 0;
+  border-bottom: 1px #EEE solid;
 }
 
 #name {
   display: inline-block;
   float: left;
-  text-transform: uppercase;
-  font-size: 1.5em;
+  /* text-transform: uppercase; */
+  text-transform: lowercase;
+  font-size: 1.1em;
 }
 
 #name .tagline {
@@ -64,20 +62,19 @@ div#header {
 }
 
 #nav a {
-  text-decoration: none;
   text-transform: lowercase;
-  font-size: 1.1em;
 }
 
 h1 {
   margin: 0.25em 0;
   padding: 0;
+  font-size: 1.3em;
 }
 
 h2 {
   margin: 0.25em 0;
   padding: 0;
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 
 .caret {
@@ -96,13 +93,17 @@ h2:hover .caret {
   color: #222;
 }
 
-#page a {
-  font-weight: bold;
+a {
+  color: #A54197;
   text-decoration: none;
 }
 
-#page a:hover {
+a:hover {
   color: #000;
+}
+
+h1, h2, h3, h4, h5, h6, #page {
+  color: #444;
 }
 
 .clear {
