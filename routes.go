@@ -126,6 +126,7 @@ func handlerStatic(rw http.ResponseWriter, req *http.Request) {
 	b, ok := css[filepath.Base(req.URL.Path)]
 	if ok {
 		rw.Header().Set("Content-Type", "text/css")
+		rw.Header().Set("Cache-Control", "public, max-age=2629000")
 		rw.Write(b)
 		return
 	}
