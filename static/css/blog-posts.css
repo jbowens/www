@@ -1,0 +1,15 @@
+img[alt=codenames-spymaster-view] {
+  width: 400px;
+  padding: 10px;
+  margin: 0 auto;
+  display: block;
+  border: 2px #EEE solid;
+}
+
+p.caption {
+  text-align: center;
+  font-size: 0.7em;
+  font-style: italic;
+  width: 400px;
+  margin: 0 auto;
+}

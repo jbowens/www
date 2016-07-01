@@ -22,8 +22,9 @@ body {
 }
 
 #page {
-  margin: 3em 0 1em 0;
+  margin: 3em 0 3em 0;
   font-size: 1.1em;
+  color: #111;
 }
 
 #page p {
@@ -112,4 +113,8 @@ h1, h2, h3, h4, h5, h6, #page {
 
 .clear {
   clear: both;
+}
+
+ul li {
+  margin-bottom: 0.5em;
 }

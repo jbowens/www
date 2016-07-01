@@ -32,7 +32,7 @@ type byCreatedAt []Post
 
 func (p byCreatedAt) Len() int           { return len(p) }
 func (p byCreatedAt) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
-func (p byCreatedAt) Less(i, j int) bool { return p[i].CreatedAt.Before(p[j].CreatedAt) }
+func (p byCreatedAt) Less(i, j int) bool { return p[i].CreatedAt.After(p[j].CreatedAt) }
 
 // Post represents an individual blog entry.
 type Post struct {
