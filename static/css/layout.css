@@ -13,7 +13,7 @@ html, body { margin: 0; padding: 0; }
 }
 
 body {
-  font-family: "pier";
+  font-family: -apple-system, BlinkMacSystemFont, 'pier', sans-serif;
 }
 
 #cont {
@@ -100,6 +100,7 @@ h2:hover .caret {
 
 a {
   color: #A54197;
+  font-weight: lighter;
   text-decoration: none;
 }
 
