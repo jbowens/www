@@ -13,3 +13,19 @@ p.caption {
   width: 400px;
   margin: 0 auto;
 }
+
+pre {
+  background: #F9F9F9;
+  border-radius: 0.5em;
+  padding: 1em;
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+code {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.8em;
+}
