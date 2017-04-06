@@ -180,4 +180,4 @@ func main() {
 
 If when running your program you get an `signal: killed` error like I did, you might be hitting [golang/go#19734](https://github.com/golang/go/issues/19734). Thankfully, there's a workaround using `go build -ldflags -s`.
 
-Enjoy your new life as an Oracle developer. ;)
+Enjoy your new life as an Oracle developer. 😉
