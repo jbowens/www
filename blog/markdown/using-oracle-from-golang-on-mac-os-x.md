@@ -1,6 +1,6 @@
 # Using Oracle from Go on Mac OS X
 
-I recently found myself in the unfortunate circumstance of needing to use Oracle from an application written in Go. I have zero experience with Oracle, and I found it pretty difficult to get a working development environment setup on my Macbook. To get everything working, I needed to:
+I recently found myself needing to use Oracle from an application written in Go. I have zero experience with Oracle, and I found it pretty difficult to get a working development environment setup on my Macbook. Here's a walkthough of everything I did to get a workable environment:
 
  * Download and install [VirtualBox](https://www.virtualbox.org/wiki/VirtualBox) if you don't already have it.
  * Download the [Oracle DB Developer VM](http://www.oracle.com/technetwork/database/enterprise-edition/databaseappdev-vm-161299.html) (warning: it's almost 8gb).
@@ -179,3 +179,5 @@ func main() {
 ```
 
 If when running your program you get an `signal: killed` error like I did, you might be hitting [golang/go#19734](https://github.com/golang/go/issues/19734). Thankfully, there's a workaround using `go build -ldflags -s`.
+
+Enjoy your new life as an Oracle developer. ;)
