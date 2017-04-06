@@ -6,7 +6,7 @@ I recently found myself in the unfortunate circumstance of needing to use Oracle
  * Download the [Oracle DB Developer VM](http://www.oracle.com/technetwork/database/enterprise-edition/databaseappdev-vm-161299.html) (warning: it's almost 8gb).
  * Download the "Basic", "SDK" and "SQL\*Plus" packages of the [Oracle Instant Client](http://www.oracle.com/technetwork/topics/intel-macsoft-096467.html).
 
-## Setup the Oracle DB Developer VM
+## Set up the Oracle DB Developer VM
 
 First, in Finder, double click on the `.ova` file you downloaded. Follow VirtualBox's prompts to import the virtual machine. It may take a couple minutes. Once it's imported, start up the VM. In the VM's open Terminal shell, run `sqlplus`. When prompted for user-name and password, provide `system` and `oracle` respectively. Then create a privileged Oracle user for testing. For example:
 
@@ -26,7 +26,7 @@ Last login: Wed Apr  5 18:07:15 2017
 
 If that doesn't work, you may need to play with VMWare's port forwarding settings. If you run into issues setting up the VM, [these instructions](http://www.thatjeffsmith.com/archive/2014/02/introducing-the-otn-developer-day-database-12c-virtualbox-image/) may be helpful.
 
-## Setup the Oracle Instant Client
+## Set up the Oracle Instant Client
 
 The Oracle Instant Client provides the Oracle Client Interface (OCI) dynamic library required by all Go drivers (and drivers for most languages). Make a directory somewhere for your Instant Client to live. I used `~/oracle`. Unzip all three zips into the directory.
 
@@ -92,7 +92,7 @@ SQL> COMMIT;
 Commit complete.
 ```
 
-## Setting up the Go driver
+## Set up the Go driver
 
 Before we can install any of the Go drivers for Oracle, we need to ensure the compiler will be able to find the Oracle Instant Client. Create a new file `/usr/local/lib/pkgconfig/oci8.pc` containing the following text, replacing the `prefix` value with the location of your Instant Client:
 
