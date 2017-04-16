@@ -7,7 +7,7 @@ This week I made a little app for playing the board game [Codenames](https://boa
 * Word cards are double-sided, so there are pairs of words that you never get to play together.
 * Word cards are small and with a large group, it's hard to make sure everyone can see the board.
 
-To play using this app, go to [www.horsepaste.com](http://www.horsepaste.com), enter a name and click 'New.' The app will create a random board for you. If you copy & paste the URL, other devices can connect to the same game.
+To play using this app, go to [www.horsepaste.com](https://www.horsepaste.com), enter a name and click 'New.' The app will create a random board for you. If you copy & paste the URL, other devices can connect to the same game.
 
 ![codenames-spymaster-view](/static/images/codenames-spymaster-view.png)
 <p class="caption">An in-progress game from the spymaster view. Words with colored backgrounds have been revealed. The darker gray tile is the Assassin.</p>
