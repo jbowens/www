@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/gob"
+	"encoding/json"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"os"
@@ -51,6 +53,34 @@ func (p Post) Title() string {
 	runes := []rune(t)
 	runes[0] = unicode.ToUpper(runes[0])
 	return string(runes)
+}
+
+// StructuredData returns JSON-LD json object describing the post.
+func (p Post) StructuredData() template.HTML {
+	// TODO(jackson): Cache the structured data output on the post?
+	b, err := json.Marshal(map[string]interface{}{
+		"@context": "http://schema.org",
+		"@type":    "BlogPosting",
+		"mainEntityOfPage": map[string]interface{}{
+			"@type": "WebPage",
+			"@id":   fmt.Sprintf("https://www.jbowens.org/p/%s", p.ID),
+		},
+		"headline":      p.Title(),
+		"datePublished": p.CreatedAt,
+		"dateModified":  p.UpdatedAt,
+		"author": map[string]interface{}{
+			"@type": "Person",
+			"name":  "Jackson Owens",
+		},
+		"publisher": map[string]interface{}{
+			"@type": "Person",
+			"name":  "Jackson Owens",
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+	return template.HTML(b)
 }
 
 // Metadata represents metadata about a post. It's stored in boltdb, instead

@@ -6,6 +6,8 @@
         {{ range .IncludeCSS }}
         <link rel="stylesheet" href="/static/css/{{ . }}" />
         {{ end }}
+
+        {{template "jsonlb" .}}
     </head>
     <body>
         <script>
@@ -36,3 +38,4 @@
     </body>
 </html>
 {{end}}
+{{define "jsonlb"}}{{end}}

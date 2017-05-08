@@ -1,6 +1,11 @@
 {{define "title"}}
   <title>{{ .Post.Title }}</title>
 {{end}}
+{{define "jsonlb"}}
+  <script type="application/ld+json">
+  {{ .Post.StructuredData }}
+  </script>
+{{end}}
 {{define "content"}}
   {{ .Post.HTML }}
 {{end}}
