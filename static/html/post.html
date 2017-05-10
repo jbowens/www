@@ -1,6 +1,9 @@
 {{define "title"}}
   <title>{{ .Post.Title }}</title>
 {{end}}
+{{define "head"}}
+<meta name="description" content="{{ .Post.Snippet }}">
+{{end}}
 {{define "jsonld"}}
   <script type="application/ld+json">
   {{ .Post.StructuredData }}

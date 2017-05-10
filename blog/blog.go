@@ -38,9 +38,10 @@ func (p byCreatedAt) Less(i, j int) bool { return p[i].CreatedAt.After(p[j].Crea
 
 // Post represents an individual blog entry.
 type Post struct {
-	ID       string
-	Markdown []byte
-	HTML     template.HTML
+	ID        string
+	Markdown  []byte
+	Plaintext string
+	HTML      template.HTML
 	Metadata
 }
 
@@ -53,6 +54,18 @@ func (p Post) Title() string {
 	runes := []rune(t)
 	runes[0] = unicode.ToUpper(runes[0])
 	return string(runes)
+}
+
+func (p Post) Snippet() string {
+	paragraphs := strings.Split(p.Plaintext, "\n\n")
+	if len(paragraphs) == 0 {
+		return ""
+	}
+	snip := strings.TrimSpace(paragraphs[0])
+	if len(snip) > 0 {
+		return snip
+	}
+	return p.Title()
 }
 
 // StructuredData returns JSON-LD json object describing the post.
@@ -150,10 +163,11 @@ func Load(dir string) error {
 		name = strings.TrimSuffix(name, ".md")
 
 		p := Post{
-			ID:       name,
-			Markdown: b,
-			HTML:     template.HTML(blackfriday.MarkdownCommon(b)),
-			Metadata: Metadata{},
+			ID:        name,
+			Markdown:  b,
+			Plaintext: string(blackfriday.Markdown(b, snippetRenderer{}, 0)),
+			HTML:      template.HTML(blackfriday.MarkdownCommon(b)),
+			Metadata:  Metadata{},
 		}
 		markdownHash := sha256.New().Sum(b)
 		copy(p.Metadata.Hash[:], markdownHash)
