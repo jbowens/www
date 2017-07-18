@@ -54,9 +54,8 @@ func (_ snippetRenderer) NormalText(out *bytes.Buffer, text []byte) {
 // to be called.
 
 func (_ snippetRenderer) Header(out *bytes.Buffer, text func() bool, _ int, _ string) {
-	v := out.Len()
 	text()
-	out.Truncate(v)
+	out.WriteString("\n")
 }
 func (_ snippetRenderer) List(out *bytes.Buffer, text func() bool, _ int) {
 	v := out.Len()

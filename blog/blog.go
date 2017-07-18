@@ -50,6 +50,12 @@ func (p Post) Title() string {
 		return p.OverrideTitle
 	}
 
+	lines := strings.Split(p.Plaintext, "\n")
+	title := strings.TrimSpace(lines[0])
+	if len(title) > 0 {
+		return title
+	}
+
 	t := strings.Join(strings.Split(p.ID, "-"), " ")
 	runes := []rune(t)
 	runes[0] = unicode.ToUpper(runes[0])
@@ -61,9 +67,12 @@ func (p Post) Snippet() string {
 	if len(paragraphs) == 0 {
 		return ""
 	}
-	snip := strings.TrimSpace(paragraphs[0])
-	if len(snip) > 0 {
-		return snip
+	lines := strings.SplitN(paragraphs[0], "\n", 2)
+	if len(lines) > 1 {
+		return strings.TrimSpace(lines[1])
+	}
+	if len(paragraphs[0]) > 0 {
+		return strings.TrimSpace(paragraphs[0])
 	}
 	return p.Title()
 }
